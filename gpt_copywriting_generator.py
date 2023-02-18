@@ -7,9 +7,11 @@ class GPTCopywritingGenerator:
         openai.api_key = os.getenv("OPENAI_API_KEY")
 
     @staticmethod
-    def send_request(request: str, word_count: int = 400, with_bullet_points: bool = False):
-        bullet_points = "bullet points," if with_bullet_points else ""
-        prompt = f"Write a copywriting article about {request}, with examples, {bullet_points} and a call to action in less than {word_count} words"
+    def send_request(request: str, word_count: int, options: list):
+        available_options = [option for option in options.keys() if options[option]]
+        options_prompt = ("with " + ", ".join(available_options)) if available_options else ""
+
+        prompt = f"Write a copywriting article about {request}, {options_prompt} in less than {word_count} words"
         response = openai.Completion.create(
             model="text-davinci-003",
             prompt=prompt,
@@ -22,5 +24,10 @@ class GPTCopywritingGenerator:
 
 
 if __name__ == '__main__':
-    resp = GPTCopywritingGenerator().send_request("fried chicken")
+    opts = {
+        "examples": True,
+        "bullet points": True,
+        "call to action": True
+    }
+    resp = GPTCopywritingGenerator().send_request("fried chicken", 400, opts)
     print(resp)

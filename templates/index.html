@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+    <head>
+        <title>Sellable Wisdom - Copywriter</title>
+    </head>
+
+    <body>
+        <div id="app_form">
+
+            <h2 class="header">Sellable Wisdom - Copywriter</h2>
+            <form action="{{ url_for('generate_article') }}" method="POST" enctype="multipart/form-data">
+                <div id="mandatory_fields">
+                    <h3 class="header">Base Parameters</h3>
+                    <label for="query">Query</label>
+                    <input type="text" id="query" name="query">
+                    </br>
+                    <label for="words_count">Words Count</label>
+                    <input type="text" id="words_count" name="words_count">
+                    </br>
+                    </br>
+                </div>
+
+                <div id="optional_fields">
+                    <h3 class="header">Optional Parameters</h3>
+                    <input type="checkbox" id="with_examples" name="with_examples">
+                    <label for="with_examples">With examples?</label>
+                    </br>
+                    <input type="checkbox" id="with_bullet_points" name="with_bullet_points">
+                    <label for="with_bullet_points">With bullet points?</label>
+                    </br>
+                    <input type="checkbox" id="with_call_to_action" name="with_call_to_action">
+                    <label for="with_call_to_action">With call to action?</label>
+                    </br>
+                </div>
+
+                <button type="submit">Generate Article!</button>
+                </br>
+                </br>
+                <label id="article" name="article">{{ article }}</label>
+            </form>
+        </div>
+    </body>
+</html>
