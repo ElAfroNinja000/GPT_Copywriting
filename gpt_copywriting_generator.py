@@ -1,26 +1,33 @@
 import os
 import openai
+import numpy
 
 
 class GPTCopywritingGenerator:
-    def __init__(self):
+    def __init__(self, responses_count):
         openai.api_key = os.getenv("OPENAI_API_KEY")
+        self.responses_count = responses_count
 
-    @staticmethod
-    def send_request(request: str, word_count: int, options: list):
+    def send_request(self, request: str, word_count: int, options: list):
         available_options = [option for option in options.keys() if options[option]]
         options_prompt = ("with " + ", ".join(available_options)) if available_options else ""
-
         prompt = f"Write a copywriting article about {request}, {options_prompt} in less than {word_count} words"
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=prompt,
-            temperature=1,
-            max_tokens=1500,
-            top_p=1,
-            frequency_penalty=1,
-            presence_penalty=1)
-        return response["choices"][0]["text"].replace("\n\n", "\n")
+
+        responses = []
+        temperatures        = numpy.random.uniform(0.5, 1,   size=self.responses_count).tolist()
+        frequency_penalties = numpy.random.uniform(0.2, 0.8, size=self.responses_count).tolist()
+        presence_penalties  = numpy.random.uniform(0.5, 1,   size=self.responses_count).tolist()
+        for i in range(self.responses_count):
+            response = openai.Completion.create(
+                model="text-davinci-003",
+                prompt=prompt,
+                temperature=temperatures[i],
+                max_tokens=1500,
+                top_p=1,
+                frequency_penalty=frequency_penalties[i],
+                presence_penalty=presence_penalties[i])
+            responses.append(response["choices"][0]["text"].replace("\n\n", "\n"))
+        return responses
 
 
 if __name__ == '__main__':
@@ -29,5 +36,5 @@ if __name__ == '__main__':
         "bullet points": True,
         "call to action": True
     }
-    resp = GPTCopywritingGenerator().send_request("fried chicken", 400, opts)
+    resp = GPTCopywritingGenerator(3).send_request("fried chicken", 400, opts)
     print(resp)

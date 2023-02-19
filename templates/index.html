@@ -2,26 +2,30 @@
 <html xmlns="http://www.w3.org/1999/html">
     <head>
         <title>Sellable Wisdom - Copywriter</title>
+        <link rel="stylesheet" type="text/css" href="static/css/test1_style.css">
     </head>
 
     <body>
-        <div id="app_form">
+        <div id="app-form">
 
             <h2 class="header">Sellable Wisdom - Copywriter</h2>
             <form action="{{ url_for('generate_article') }}" method="POST" enctype="multipart/form-data">
                 <div id="mandatory_fields">
-                    <h3 class="header">Base Parameters</h3>
-                    <label for="query">Query</label>
+                    <h3 class="header">What would you like to talk about?</h3>
+                    <label for="query">Topic</label>
                     <input type="text" id="query" name="query">
                     </br>
-                    <label for="words_count">Words Count</label>
+                    <label for="words_count">Number of Words</label>
                     <input type="text" id="words_count" name="words_count">
+                    </br>
+                    <label for="responses_count">Number or Articles</label>
+                    <input type="text" id="responses_count" name="responses_count">
                     </br>
                     </br>
                 </div>
 
                 <div id="optional_fields">
-                    <h3 class="header">Optional Parameters</h3>
+                    <h3 class="header">Options</h3>
                     <input type="checkbox" id="with_examples" name="with_examples">
                     <label for="with_examples">With examples?</label>
                     </br>
@@ -33,10 +37,16 @@
                     </br>
                 </div>
 
-                <button type="submit">Generate Article!</button>
+                <button type="submit">Generate!</button>
                 </br>
                 </br>
-                <label id="article" name="article">{{ article }}</label>
+                <div class="articles-container">
+                    {% for article in articles %}
+                        <label>{{ article }}</label>
+                        </br>
+                        </br>
+                    {% endfor %}
+                </div>
             </form>
         </div>
     </body>

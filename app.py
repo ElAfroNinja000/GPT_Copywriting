@@ -6,18 +6,19 @@ app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    article = ""
-    return render_template('index.html', article=article)
+    return render_template('index.html')
 
 
 @app.route('/generate_article', methods=['POST'])
 def generate_article():
-    query       = request.form["query"]
-    words_count = int(request.form["words_count"])
+    query           = request.form["query"]
+    words_count     = int(request.form["words_count"])
+    responses_count = int(request.form["responses_count"])
     options = {
         "examples":       (request.form.get("with_examples")       == "on"),
         "bullet points":  (request.form.get("with_bullet_points")  == "on"),
         "call to action": (request.form.get("with_call_to_action") == "on")
     }
-    article = GPTCopywritingGenerator().send_request(query, words_count, options)
-    return render_template('index.html', article=article)
+
+    articles = GPTCopywritingGenerator(responses_count).send_request(query, words_count, options)
+    return render_template('index.html', articles=articles)
