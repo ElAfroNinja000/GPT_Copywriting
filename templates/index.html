@@ -1,14 +1,29 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <head>
         <title>Sellable Wisdom - Copywriter</title>
-        <link rel="stylesheet" type="text/css" href="static/css/test1_style.css">
+        <link rel="stylesheet" type="text/css" href="static/css/test25_style.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('form').submit(function() {
+                  // Show the loading screen
+                  $('#loading-screen').show();
+                });
+
+                $(document).ajaxStop(function() {
+                  // Hide the loading screen
+                  $('#loading-screen').hide();
+                });
+              });
+        </script>
     </head>
 
     <body>
         <div id="app-form">
-
             <h2 class="header">Sellable Wisdom - Copywriter</h2>
+            </br>
+            </br>
             <form action="{{ url_for('generate_article') }}" method="POST" enctype="multipart/form-data">
                 <div id="mandatory_fields">
                     <h3 class="header">What would you like to talk about?</h3>
@@ -34,20 +49,28 @@
                     </br>
                     <input type="checkbox" id="with_call_to_action" name="with_call_to_action">
                     <label for="with_call_to_action">With call to action?</label>
-                    </br>
                 </div>
 
-                <button type="submit">Generate!</button>
+                <button type="submit" id="btn-generate">Generate!</button>
                 </br>
                 </br>
                 <div class="articles-container">
                     {% for article in articles %}
-                        <label>{{ article }}</label>
-                        </br>
-                        </br>
+                    <div id="article-form">
+                        {% for line in article.split('\n') %}
+                            <label>{{ line }}</label>
+                            </br>
+                            </br>
+                        {% endfor %}
+                    </div>
                     {% endfor %}
                 </div>
             </form>
+        </div>
+        <div id="loading-screen">
+            <div class="message">Generating...</div>
+            </br>
+            <div class="spinner"></div>
         </div>
     </body>
 </html>

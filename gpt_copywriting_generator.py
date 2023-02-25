@@ -26,7 +26,7 @@ class GPTCopywritingGenerator:
                 top_p=1,
                 frequency_penalty=frequency_penalties[i],
                 presence_penalty=presence_penalties[i])
-            responses.append(response["choices"][0]["text"].replace("\n\n", "\n"))
+            responses.append(response["choices"][0]["text"].replace("\n\n", ""))
         return responses
 
 
@@ -36,5 +36,5 @@ if __name__ == '__main__':
         "bullet points": True,
         "call to action": True
     }
-    resp = GPTCopywritingGenerator(3).send_request("fried chicken", 400, opts)
+    resp = GPTCopywritingGenerator(3).send_request("white chocolate", 400, opts)
     print(resp)
